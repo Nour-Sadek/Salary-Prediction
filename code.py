@@ -2,6 +2,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_percentage_error
 
 """Stage 1: Linear regression with one independent variable
 
@@ -23,3 +24,28 @@ Percentage Error).
 
 """
 
+data = pd.read_csv('Data/data.csv')
+
+# Extracting the predictor and target data sets and splitting then into train
+# and test sets
+X, y = data[['rating']], data['salary']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3,
+                                                    random_state=100)
+
+# Fitting the train data set to a Linear Regression model with an intercept
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Predicting the salary from the test set with the fitted model then
+# calculating MAPE
+prediction = model.predict(X_test)
+mape = mean_absolute_percentage_error(y_test, prediction)
+
+# Printing the coefficient, intercept, and MAPE value rounded to 5 decimal
+# places
+slope = round(model.coef_[0], 5)
+intercept = round(model.intercept_, 5)
+
+print("The slope, intercept, and MAPE for the linear regression model \
+with one independent variable are:")
+print(slope, intercept, round(mape, 5), end='\n\n')
