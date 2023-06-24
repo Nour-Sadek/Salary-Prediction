@@ -101,3 +101,37 @@ print(f'The minimum MAPE score is {min(mape_scores)} when testing raising the \
 power of the predictor by 2, 3, or 4. This MAPE score was obtained when the \
 power of the predictor was raised to \
 {required_powers[mape_scores.index(min(mape_scores))]}', end='\n\n')
+
+"""Stage 3: Linear regression with many independent variables
+
+Description
+
+In the previous stages, you used only one independent variable. Now, your task 
+is to include other variables into a model.
+
+Objectives
+
+Do the same as in Stage 1 (fit the data to a Linear Regression model), but 
+include all numeric columns (not just <rating>) other than the target for the 
+predictors.
+Print the model coefficients.
+
+"""
+
+# Extracting the predictor and target data sets and splitting then into train
+# and test sets
+X, y = data[['rating', 'draft_round', 'age', 'experience', 'bmi']], \
+    data['salary']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3,
+                                                    random_state=100)
+
+# Fitting the train data set to a Linear Regression model with an intercept
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Determining the coefficients of the model
+model_coefficients = list(model.coef_)
+print("The coefficients for the Linear Regression model with multiple \
+independent variables included (5 total) are:")
+print(', '.join([str(num) for num in model_coefficients]), end='\n\n')
+
