@@ -135,3 +135,26 @@ print("The coefficients for the Linear Regression model with multiple \
 independent variables included (5 total) are:")
 print(', '.join([str(num) for num in model_coefficients]), end='\n\n')
 
+"""Stage 4: Test for multi-collinearity and variables selection
+
+Description
+
+If you have a linear regression with many variables, some of them may be 
+correlated. This way, the performance of the model may decrease. A crucial 
+step is to check the model for multi-collinearity and exclude the variables 
+with a strong correlation with other variables.
+
+Objectives
+
+1 - Calculate the correlation matrix for the numeric variables
+2 - Find the variables where the correlation coefficient is greater than 0.2
+3 - Split the predictors and the target into training and test sets. Use 
+test_size=0.3
+4 - Fit the linear models for salary prediction based on the subsets of other 
+variables. The subsets are as follows:
+    - First, try to remove each of the variables found in step 2
+    - Second, remove each possible pair of these variables
+5 - Make predictions and print the lowest MAPE rounded to 5 decimal places
+
+"""
+
