@@ -158,3 +158,71 @@ variables. The subsets are as follows:
 
 """
 
+# 1 - Calculate the correlation matrix for the numeric variables
+numeric_data = data[['rating', 'draft_round', 'age', 'experience', 'bmi']]
+corr = numeric_data.corr()
+
+# 2 - Find the variables where the correlation coefficient is greater than 0.2
+correlated_features = []
+for index, row in corr.iterrows():
+    if row.between(0.2, 1, inclusive='left').any():
+        correlated_features.append(index)
+
+# 3 - Split the predictors and the target into training and test sets. Use
+# test_size=0.3
+X, y = numeric_data, data['salary']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3,
+                                                    random_state=100)
+
+# Creating the list that will store all MAPE scores
+all_mape_scores = []
+
+# Removing only one of the items in <correlated_features>
+for feature in correlated_features:
+    # Remove the <feature> column from the train and test sets
+    X_train_f, X_test_f = X_train.loc[:,
+                          X_train.columns != feature], \
+                          X_test.loc[:, X_test.columns != feature]
+
+    # Fitting the train data set to a Linear Regression model
+    model = LinearRegression()
+    model.fit(X_train_f, y_train)
+
+    # Predicting the salary from the test set with the fitted model then
+    # calculating MAPE
+    prediction = model.predict(X_test_f)
+    mape = mean_absolute_percentage_error(y_test, prediction)
+
+    all_mape_scores.append(round(mape, 5))
+
+# Removing a pair of the features (keeping only one of the
+# <correlated_features> at a time)
+i = 0
+for feature in correlated_features:
+    excluded = correlated_features.pop(i)
+
+    # Remove other features that aren't currently assigned to <feature>
+    X_train_f, X_test_f = X_train.loc[:, ~X_train.columns.isin(
+        correlated_features)], X_test.loc[:,
+                               ~X_test.columns.isin(correlated_features)]
+
+    # Fitting the train data set to a Linear Regression model
+    model = LinearRegression()
+    model.fit(X_train_f, y_train)
+
+    # Predicting the salary from the test set with the fitted model then
+    # calculating MAPE
+    prediction = model.predict(X_test_f)
+    mape = mean_absolute_percentage_error(y_test, prediction)
+
+    all_mape_scores.append(round(mape, 5))
+
+    # Insert back <feature> currently saved in <excluded> to
+    # <correlated_features>
+    correlated_features.insert(i, excluded)
+
+    i = i + 1
+
+print("The minimum MAPE score obtained after excluding variables with a strong \
+correlation with other variables is:")
+print(min(all_mape_scores), end='\n\n')
