@@ -67,3 +67,37 @@ each time raising the predictor to the power of 2, 3, then 4. Print the best
 MAPE obtained.
 
 """
+
+# Create a function that will output the mape score given the power to which we
+# want to raise the predictor
+
+
+def predictor_transform(power: int) -> float:
+    """Return the MAPE score after fitting <data> to a Linear Regression model
+    raising the power of the predictor <data[['rating]] by <power>."""
+
+    # Extracting the predictor and target data sets and splitting then into
+    # train and test sets
+    X, y = data[['rating']] ** power, data['salary']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3,
+                                                        random_state=100)
+
+    # Fitting the train data set to a Linear Regression model with an intercept
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+
+    # Predicting the salary from the test set with the fitted model then
+    # calculating MAPE
+    prediction = model.predict(X_test)
+    mape = mean_absolute_percentage_error(y_test, prediction)
+
+    return round(mape, 5)
+
+
+required_powers = [2, 3, 4]
+mape_scores = [predictor_transform(power) for power in required_powers]
+
+print(f'The minimum MAPE score is {min(mape_scores)} when testing raising the \
+power of the predictor by 2, 3, or 4. This MAPE score was obtained when the \
+power of the predictor was raised to \
+{required_powers[mape_scores.index(min(mape_scores))]}', end='\n\n')
