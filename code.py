@@ -49,3 +49,21 @@ intercept = round(model.intercept_, 5)
 print("The slope, intercept, and MAPE for the linear regression model \
 with one independent variable are:")
 print(slope, intercept, round(mape, 5), end='\n\n')
+
+"""Stage 2: Linear regression with predictor transformation
+
+Description
+
+When drawing a scatterplot of rating vs salary, the relationship between these
+two variables seems to be different from linear and looks like a polynomial 
+function. Let's try to raise the rating by several degrees and see whether it 
+improves the score.
+
+Objectives
+
+Make the same steps as in Stage 1 (split the data to train and test sets and 
+fit to a LinearRegression model then calculate MAPE), but do it 3 times, for 
+each time raising the predictor to the power of 2, 3, then 4. Print the best 
+MAPE obtained.
+
+"""
