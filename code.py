@@ -174,8 +174,10 @@ X, y = numeric_data, data['salary']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3,
                                                     random_state=100)
 
-# Creating the list that will store all MAPE scores
+# Creating two parallel lists that will store all MAPE scores and the
+# corresponding feature(s) that were deleted
 all_mape_scores = []
+deleted_features = []
 
 # Removing only one of the items in <correlated_features>
 for feature in correlated_features:
@@ -194,6 +196,7 @@ for feature in correlated_features:
     mape = mean_absolute_percentage_error(y_test, prediction)
 
     all_mape_scores.append(round(mape, 5))
+    deleted_features.append([feature])
 
 # Removing a pair of the features (keeping only one of the
 # <correlated_features> at a time)
@@ -216,6 +219,7 @@ for feature in correlated_features:
     mape = mean_absolute_percentage_error(y_test, prediction)
 
     all_mape_scores.append(round(mape, 5))
+    deleted_features.append(correlated_features[:])
 
     # Insert back <feature> currently saved in <excluded> to
     # <correlated_features>
