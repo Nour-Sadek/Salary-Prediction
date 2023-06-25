@@ -230,3 +230,25 @@ for feature in correlated_features:
 print("The minimum MAPE score obtained after excluding variables with a strong \
 correlation with other variables is:")
 print(min(all_mape_scores), end='\n\n')
+
+"""Stage 5: Deal with negative predictions
+
+Description
+
+A linear model may predict negative values. However, such values can be 
+meaningless because the salary can't be negative. In this stage, handle 
+negative predictions.
+
+Objectives
+
+1 - Choose the predictors that gave the best MAPE metric in Stage 4.
+2 - Split predictors and the target into train and test parts. Use test_size=0.3
+3 - Fit the model
+4 - Predict the salaries
+5 - Try two techniques to deal with negative predictions:
+    - replace the negative values with 0
+    - replace the negative values with the median of the training part of y
+6 - Calculate the MAPE for every two options and print the best as a floating 
+number rounded to five decimal places.
+
+"""
