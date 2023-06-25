@@ -1,5 +1,6 @@
 # Imported Packages
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_percentage_error
@@ -229,7 +230,7 @@ for feature in correlated_features:
 
 print("The minimum MAPE score obtained after excluding variables with a strong \
 correlation with other variables is:")
-print(min(all_mape_scores), end='\n\n')
+print(min(all_mape_scores))
 
 """Stage 5: Deal with negative predictions
 
@@ -252,3 +253,44 @@ Objectives
 number rounded to five decimal places.
 
 """
+
+# Determining which feature(s) were deleted for the best MAPE socre obtained
+# in Stage 4
+min_mape_features = deleted_features[all_mape_scores.index(min(all_mape_scores))]
+print(f'The excluded feature(s) were {", ".join(min_mape_features)}',
+      end='\n\n')
+
+# Remove the <min_mape_features> column(s) from the train and test sets
+X_train, X_test = X_train.loc[:, ~X_train.columns.isin(min_mape_features)], \
+    X_test.loc[:, ~X_test.columns.isin(min_mape_features)]
+
+# Fitting the train data set to a Linear Regression model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Predicting the salary from the test set with the fitted model
+prediction = model.predict(X_test)
+mape_of_techniques = []
+techniques = []
+
+# Technique one to deal with negative predictions: replace the negative values
+# with 0
+tech_1_predictions = prediction.copy()
+tech_1_predictions[tech_1_predictions < 0] = 0
+
+mape = mean_absolute_percentage_error(y_test, tech_1_predictions)
+mape_of_techniques.append(round(mape, 5))
+techniques.append('negative values were replaced with 0')
+
+# Technique two to deal with negative predictions: replace the negative values
+# with the median of the training part of y
+tech_2_predictions = prediction.copy()
+tech_2_predictions[tech_2_predictions < 0] = np.median(y_train)
+
+mape = mean_absolute_percentage_error(y_test, tech_2_predictions)
+mape_of_techniques.append(round(mape, 5))
+techniques.append('negative values were replaced with the median of the \
+training part of y')
+
+print(f'The minimum MAPE score, {min(mape_of_techniques)}, was obtained when \
+{techniques[mape_of_techniques.index(min(mape_of_techniques))]}')
