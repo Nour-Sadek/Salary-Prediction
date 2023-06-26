@@ -1,10 +1,5 @@
 # Salary Prediction
 
-### Learning Outcomes:
-Practice fitting linear models with scikit-learn to predict values on the 
-unknown data. Apply polynomial feature engineering, test your data for 
-multi-collinearity, and evaluate models with the MAPE score.
-
 ### About
 Linear regression is one of the simplest yet powerful tools for finding 
 regularities in data and using them for prediction. It is widely applied both 
@@ -12,6 +7,22 @@ in science and practice. In this project, you will learn how to apply
 scikit-learn library to fit linear models, use them for prediction, compare 
 the models, and select the best one. You will also learn how to carry out 
 testing for certain issues with data.
+
+### Learning Outcomes of the Project:
+Practice fitting linear models with scikit-learn to predict values on the 
+unknown data. Apply polynomial feature engineering, test your data for 
+multi-collinearity, and evaluate models with the MAPE score.
+
+### Learning Outcomes of Each Stage of the Project:
+_Stage 1_ : Fit a simple model with one predictor and evaluate it.
+
+_Stage 2_ : Use the linear model to handle the polynomial relationship between independent and dependent variables.
+
+_Stage 3_ : Fit a linear model with many independent variables and compare it with the previous models.
+
+_Stage 4_ : Check whether the variables have a high correlation and try to improve the model's performance by removing them.
+
+_Stage 5_ : Get rid of negative predictions and see whether the model performance improves.
 
 # General Info
 
